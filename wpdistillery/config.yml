@@ -18,6 +18,11 @@ wpfolder: public
 # WordPress version
 wpversion: latest
 
+# WordPress Multisite config
+wp_multisite:
+  # starter .htaccess file are in this directory
+  htaccess: ../wpdistillery/htaccess
+
 # language/timezone
 wplocale: en_US
 timezone: "America/New_York"
@@ -76,8 +81,11 @@ plugins_active:
   - enable-media-replace
   - favicon-by-realfavicongenerator
   - regenerate-thumbnails
-  - simple-page-ordering
   - user-switching
+# Network activated plugins
+# (if this is a non-multisite installation, these plugins will be activated)
+plugins_active_network:
+  - simple-page-ordering
 
 # plugins to install
 plugins_inactive:
@@ -100,6 +108,8 @@ plugins_inactive:
 
 setup:
   wp: true
+    multisite: true    # toggle for Multisite
+      subdomain: false  # toggle for Subdomains
   settings: true
   theme: true
   plugins: true
