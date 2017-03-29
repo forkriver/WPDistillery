@@ -14,6 +14,7 @@ The configuration file is split into five sections:
 ## Installation
 * In **`wpfolder`** you define the folder containing WordPress. Within the current version of Scotch Box this is `public` by default.
 * In **`wpversion`** you can define what WordPress version to install.
+* **`wp_multisite`** tells the installation script where to find the `.htaccess` files it will need.
 * With **`wplocale`** you can select what language to download and install WordPress. Use language Codes like `en_US` or `en_GB`.
 * Add your timezone as string to **`timezone`**. See [List of Supported Timezones](http://php.net/manual/en/timezones.php).
 * **`admin`** defines the default admin user. Set your preferred username, password and email.
@@ -28,6 +29,12 @@ wpfolder: public
 
 # WordPress version
 wpversion: latest
+
+# WordPress Multisite config
+wp_multisite:
+  # starter .htaccess file are in this directory
+  htaccess: ../wpdistillery/htaccess
+
 
 # language/timezone
 wplocale: en_US
@@ -95,6 +102,8 @@ theme:
 ## Plugins
 You can select what plugins you want WP Distillery to install for you. Split into two sections you can define which plugins to download and install, and which to also activate. By default this section contains a few recommendations.
 
+The **`plugins_active_network`** section tells the installation script which plugins should be activated on all sites in a WordPress Multisite network. If you are not installing Multisite, the plugins in **`plugins_active_network`** will be activated along with the ones in **`plugins_active`**.
+
 ```yaml
 # PLUGINS
 #################################################################
@@ -106,9 +115,13 @@ plugins_active:
   - enable-media-replace
   - favicon-by-realfavicongenerator
   - regenerate-thumbnails
-  - simple-page-ordering
   - user-switching
   - google-sitemap-generator
+
+# Network activated plugins
+# (if this is a non-multisite installation, these plugins will be activated)
+plugins_active_network:
+  - simple-page-ordering
 
 # plugins to install
 plugins_inactive:
@@ -137,6 +150,8 @@ plugins_active:
 Maybe you don't want WP Distillery to install a theme? Or you prefer keeping the default posts and files it comes with? Within the setup options at the bottom of the file you can tell WP Distillery which tasks to perform. Simply set those you wan't to skip to `false`.
 
 * **`wp`**: install WordPress core
+* **`wp > multisite`**: install WordPress Multisite
+* **`wp > multisite > subdomain`**: use the subdomain feature of WordPress Multisite
 * **`settings`**: set custom WordPress settings (Note: the value defined **`timezone`** is also considered a setting)
 * **`theme`**: install and activate the theme defined above
 * **`plugins`**: install the plugins listed
@@ -154,6 +169,8 @@ Maybe you don't want WP Distillery to install a theme? Or you prefer keeping the
 
 setup:
   wp: true
+    multisite: true    # toggle for Multisite
+      subdomain: false  # toggle for Subdomains
   settings: true
   theme: true
   plugins: true
