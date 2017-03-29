@@ -81,8 +81,11 @@ plugins_active:
   - enable-media-replace
   - favicon-by-realfavicongenerator
   - regenerate-thumbnails
-  - simple-page-ordering
   - user-switching
+# Network activated plugins
+# (if this is a non-multisite installation, these plugins will be activated)
+plugins_active_network:
+  - simple-page-ordering
 
 # plugins to install
 plugins_inactive:
@@ -105,8 +108,8 @@ plugins_inactive:
 
 setup:
   wp: true
-    multisite: true
-      subdomain: false  # toggle for Subdomain Multisite
+    multisite: true    # toggle for Multisite
+      subdomain: false  # toggle for Subdomains
   settings: true
   theme: true
   plugins: true

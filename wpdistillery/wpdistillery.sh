@@ -142,8 +142,16 @@ if $CONF_setup_theme ; then
     printf "${BLU}»»» renaming $CONF_theme_name to $CONF_theme_rename...${NC}\n"
     mv wp-content/themes/$CONF_theme_name wp-content/themes/$CONF_theme_rename
     wp theme activate $CONF_theme_rename
+    # Network Enable theme (on Multisite)
+    if $CONF_setup_wp_multisite ; then
+      wp theme enable $CONF_theme_rename --network
+    fi
   else
     wp theme activate $CONF_theme_name
+    # Network Enable theme (on Multisite)
+    if $CONF_setup_wp_multisite ; then
+      wp theme enable $CONF_theme_name --network
+    fi
   fi
 else
   printf "${BLU}>>> skipping theme installation...${NC}\n"
@@ -188,6 +196,14 @@ if $CONF_setup_plugins ; then
   for entry in "${CONF_plugins_active[@]}"
   do
   	wp plugin install $entry --activate
+  done
+  for entry in "${CONF_plugins_active_network[@]}"
+  do
+    if $CONF_setup_wp_multisite ; then
+      wp plugin install $entry --activate-network
+    else
+      wp plugin install $entry --activate
+    fi
   done
 
   printf "${BLU}»»» adding inactive plugins${NC}\n"
